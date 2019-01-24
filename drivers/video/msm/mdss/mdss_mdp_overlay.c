@@ -3846,7 +3846,7 @@ int mdss_mdp_dfps_update_params(struct msm_fb_data_type *mfd,
 	 * data, so any further call to get the screen
 	 * info has the updated timings.
 	 */
-	mdss_panelinfo_to_fb_var(&pdata->panel_info, var);
+	mdss_panelinfo_to_fb_var(mfd);
 
 	MDSS_XLOG(dfps);
 	mutex_unlock(&mdp5_data->dfps_lock);
