@@ -26,6 +26,8 @@ static int bmi160_buffer_preenable(struct iio_dev *indio_dev)
 
 static const struct iio_buffer_setup_ops bmi_buffer_setup_ops = {
 	.preenable = &bmi160_buffer_preenable,
+	.postenable = &iio_triggered_buffer_postenable,
+	.predisable = &iio_triggered_buffer_predisable,
 };
 
 int bmi_allocate_ring(struct iio_dev *indio_dev)
@@ -38,11 +40,11 @@ int bmi_allocate_ring(struct iio_dev *indio_dev)
 		err = -ENOMEM;
 		goto error_ret;
 	}
-	iio_device_attach_buffer(indio_dev, ring);
+	indio_dev->buffer = ring;
 	/*setup ring buffer*/
 	ring->scan_timestamp = true;
 	indio_dev->setup_ops = &bmi_buffer_setup_ops;
-	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
+	/*indio_dev->modes |= INDIO_BUFFER_TRIGGERED;*/
 	err = iio_buffer_register(indio_dev, indio_dev->channels,
 		indio_dev->num_channels);
 	if (err) {
