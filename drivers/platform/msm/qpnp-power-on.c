@@ -1281,7 +1281,10 @@ qpnp_pon_config_input(struct qpnp_pon *pon,  struct qpnp_pon_config *cfg)
 	}
 
 	/* don't send dummy release event when system resumes */
-	__set_bit(INPUT_PROP_NO_DUMMY_RELEASE, pon->pon_input->propbit);
+    
+    /* FIX: INPUT_PROP_NO_DUMMY_RELEASE property is intepreted by upstream libinput as ID_INPUT_ACCELEROMETER instead,
+which prevents it from properly handling the input device. */
+	//__set_bit(INPUT_PROP_NO_DUMMY_RELEASE, pon->pon_input->propbit);
 	input_set_capability(pon->pon_input, EV_KEY, cfg->key_code);
 
 	return 0;
